@@ -36,8 +36,8 @@ jobs:
             docker run --rm ghcr.io/aquasecurity/trivy:0.37.2 image ${{ steps.meta.outputs.scan_image }} --compliance docker-cis -f json --ignore-unfixed -o ${{ steps.meta.outputs.cis_json_file }}
             echo "Finished scan #$i"
             echo "Cleaning up cache"
-            rm -rf /root/.cache/trivy # Clear Trivy cache between scans
-            sleep 2 # Adding a delay to throttle the loop (optional)
+            sudo rm -rf /root/.cache/trivy # Use sudo to clear the cache
+            sleep 2
           done
   
 
