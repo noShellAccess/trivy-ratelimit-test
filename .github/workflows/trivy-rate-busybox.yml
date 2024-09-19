@@ -2,6 +2,8 @@ name: Trivy Image Scan
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '*/1 * * * *'
   push:
     branches:
       - main
