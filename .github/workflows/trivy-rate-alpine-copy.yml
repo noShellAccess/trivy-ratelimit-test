@@ -1,0 +1,46 @@
+name: Trivy Image Scan
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  trivy-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository to scan
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step to set metadata or scan information
+      # Example metadata step to get scan_image and cis_json_file outputs
+      # Step to set metadata for image scan
+      - name: Set metadata for image scan
+        id: meta
+        run: |
+          echo "scan_image=python:3.4-alpine"
+          echo "cis_json_file=cis_scan_results.json"
+          echo "::set-output name=scan_image::python:3.4-alpine"
+          echo "::set-output name=cis_json_file::cis_scan_results.json" 
+          
+      - name: Run Trivy Scan for python
+        uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
+        if: ${{ steps.meta.outputs.scan_image != '' }}
+        id: cis_json
+        with:
+          entrypoint: trivy
+          args: "image ${{ steps.meta.outputs.scan_image }} --compliance ${{ env.compliance }} -f json --ignore-unfixed -o ${{ steps.meta.outputs.cis_json_file }}"
+        env:
+          input: alpine:latest     # Example input image (can be set dynamically)
+          compliance: docker-cis 
+
+      # Upload the Trivy scan report (optional step to upload the output JSON)
+      - name: Upload Trivy Scan Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: trivy-scan-report
+          path: ${{ steps.meta.outputs.cis_json_file }} 
