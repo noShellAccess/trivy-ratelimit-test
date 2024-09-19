@@ -31,7 +31,7 @@ jobs:
 
 
       - name: Run Trivy Scan for python
-        uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
+        uses: aquasecurity/trivy-action@0.20.0
         if: ${{ steps.meta.outputs.scan_image != '' }}
         id: cis_json
         with:
