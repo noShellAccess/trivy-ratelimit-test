@@ -37,7 +37,7 @@ jobs:
           args: "image ${{ steps.meta.outputs.scan_image }} --compliance ${{ env.compliance }} -f json --ignore-unfixed -o ${{ steps.meta.outputs.cis_json_file }}"
         env:
           input: python:3.4-alpine       # Example input image (can be set dynamically)
-          compliance: CIS                # Example compliance (can be set dynamically)
+          compliance: docker-cis              # Example compliance (can be set dynamically)
 
       # Upload the Trivy scan report (optional step to upload the output JSON)
       - name: Upload Trivy Scan Report
