@@ -32,13 +32,12 @@ jobs:
        # Loop to run the Trivy scan multiple times to test rate limit
       - name: Run Trivy Scan Multiple Times to Test Rate Limit
         run: |
-            for i in {1..50}; do
+            for i in {1..70}; do
               echo "Running scan #$i"
               docker run --rm -e TRIVY_PASSWORD=$TRIVY_PASSWORD ghcr.io/aquasecurity/trivy:0.37.2 image ${{ steps.meta.outputs.scan_image }} --compliance docker-cis -f json --ignore-unfixed -o ${{ steps.meta.outputs.cis_json_file }}
               echo "Finished scan #$i"
               echo "Cleaning up cache"
               sudo rm -rf /root/.cache/trivy # Use sudo to clear the cache
-              sleep 2
             done
         env:
             TRIVY_PASSWORD: ${{ secrets.TRIVY_PAT }}
