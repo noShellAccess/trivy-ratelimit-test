@@ -37,7 +37,6 @@ jobs:
             echo "Finished scan #$i"
             echo "Cleaning up cache"
             sudo rm -rf /root/.cache/trivy # Use sudo to clear the cache
-            sleep 2
           done
   
 
