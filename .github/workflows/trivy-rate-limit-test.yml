@@ -18,12 +18,14 @@ jobs:
 
       # Step to set metadata or scan information
       # Example metadata step to get scan_image and cis_json_file outputs
+      # Step to set metadata for image scan
       - name: Set metadata for image scan
         id: meta
         run: |
-          echo "scan_image=python:3.4-alpine" >> $GITHUB_ENV
-          echo "cis_json_file=cis_scan_results.json" >> $GITHUB_ENV
-
+          echo "scan_image=python:3.4-alpine"
+          echo "cis_json_file=cis_scan_results.json"
+          echo "::set-output name=scan_image::python:3.4-alpine"
+          echo "::set-output name=cis_json_file::cis_scan_results.json"
 
       # Run Trivy scan using the reusable workflow
       - name: Run Trivy Scan
@@ -42,4 +44,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: trivy-scan-report
-          path: ${{ steps.meta.outputs.cis_json_file }}
+          path: ${{ steps.meta.outputs.cis_json_file }} 
