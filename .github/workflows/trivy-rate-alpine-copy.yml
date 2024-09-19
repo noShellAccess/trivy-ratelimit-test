@@ -29,16 +29,17 @@ jobs:
           echo "::set-output name=scan_image::python:3.4-alpine"
           echo "::set-output name=cis_json_file::cis_scan_results.json" 
           
-      - name: Run Trivy Scan for python
-        uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
-        if: ${{ steps.meta.outputs.scan_image != '' }}
-        id: cis_json
-        with:
-          entrypoint: trivy
-          args: "image ${{ steps.meta.outputs.scan_image }} --compliance ${{ env.compliance }} -f json --ignore-unfixed -o ${{ steps.meta.outputs.cis_json_file }}"
-        env:
-          input: alpine:latest     # Example input image (can be set dynamically)
-          compliance: docker-cis 
+      - name: Run Trivy Scan Multiple Times to Test Rate Limit
+        run: |
+          for i in {1..50}; do
+            echo "Running scan #$i"
+            docker run --rm ghcr.io/aquasecurity/trivy:0.37.2 image ${{ steps.meta.outputs.scan_image }} --compliance docker-cis -f json --ignore-unfixed -o ${{ steps.meta.outputs.cis_json_file }}
+            echo "Finished scan #$i"
+            echo "Cleaning up cache"
+            rm -rf /root/.cache/trivy # Clear Trivy cache between scans
+            sleep 2 # Adding a delay to throttle the loop (optional)
+          done
+  
 
       # Upload the Trivy scan report (optional step to upload the output JSON)
       - name: Upload Trivy Scan Report
