@@ -28,4 +28,4 @@ jobs:
         uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
         with:
           entrypoint: trivy
-          args: --download-db-only
+          args: image --download-db-only
