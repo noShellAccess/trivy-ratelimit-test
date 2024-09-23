@@ -13,7 +13,9 @@ jobs:
   cache_vuln_db:
     runs-on: ubuntu-latest
     steps:
-
+      - name: Prepare cache directory
+        run: |
+          sudo chown -R $USER:$USER .trivy
       - name: Cache vulnerability database
         id: cache
         uses: actions/cache@v4
