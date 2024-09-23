@@ -24,8 +24,8 @@ jobs:
         uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
         with:
           entrypoint: trivy
-          args: image --download-db-only
+          args: image --download-db-only --cache-dir .
 
       - name: filesys
         run: |
-            trivy image --help;
+          pwd
