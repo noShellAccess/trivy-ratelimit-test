@@ -13,7 +13,6 @@ jobs:
   cache_vuln_db:
     runs-on: ubuntu-latest
     steps:
-        
       - name: Cache vulnerability database
         uses: actions/cache@v3
         with:
@@ -26,3 +25,8 @@ jobs:
         with:
           entrypoint: trivy
           args: image --download-db-only
+
+      - name: filesys
+        run: |
+            ls /github/home/.cache/trivy;
+            trivy image --help;
