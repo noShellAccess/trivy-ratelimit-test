@@ -13,10 +13,13 @@ jobs:
   cache_vuln_db:
     runs-on: ubuntu-latest
     steps:
+      - name: filesys
+        run: |
+          mkdir ~/.cache/trivy 
       - name: Cache vulnerability database
         uses: actions/cache@v3
         with:
-          path: /home/runner/work/trivy-ratelimit-test/trivy-ratelimit-test/db  # Where the DB will be stored
+          path: ~/.cache/trivy/db  # Where the DB will be stored
           key: trivy-db-cache-${{ steps.get-date.outputs.date }}
 
       - name: Download vulnerability DB
@@ -24,8 +27,8 @@ jobs:
         uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
         with:
           entrypoint: trivy
-          args: image --download-db-only --cache-dir /home/runner/work/trivy-ratelimit-test/trivy-ratelimit-test
+          args: image --download-db-only --cache-dir ~/.cache/trivy 
 
       - name: filesys
         run: |
-          ls /home/runner/work/trivy-ratelimit-test/trivy-ratelimit-test/db
+          ls ~/.cache/trivy/db
