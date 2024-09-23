@@ -17,6 +17,7 @@ jobs:
         run: |
           sudo mkdir -p .trivy
           sudo chown -R $USER:$USER .trivy
+          sudo chmod -R 777 .trivy
       - name: Cache vulnerability database
         id: cache
         uses: actions/cache@v4
