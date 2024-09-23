@@ -26,7 +26,6 @@ jobs:
           key: trivy-db-cache_${{ github.run_id }}
 
       - name: Download vulnerability DB
-        if: steps.cache.outputs.cache-hit != 'true'
         uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
         with:
           entrypoint: trivy
