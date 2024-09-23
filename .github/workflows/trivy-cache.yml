@@ -13,11 +13,15 @@ jobs:
   cache_vuln_db:
     runs-on: ubuntu-latest
     steps:
+      - name: Prepare cache directory
+        run: mkdir -p /github/home/.cache/trivy  # Ensure the directory exists
+
       - name: Cache vulnerability database
         uses: actions/cache@v3
         with:
-          path: /github/home/.cache/trivy  # Where the DB will be stored
+          path: /github/home/.cache/trivy  # Path to store the Trivy DB
           key: trivy-db-cache-${{ steps.get-date.outputs.date }}
+          restore-keys: trivy-db-cache-
 
       - name: Download vulnerability DB
         if: steps.cache-key.outputs.cache-hit != 'true'
@@ -25,3 +29,6 @@ jobs:
         with:
           entrypoint: trivy
           args: image --download-db-only --cache-dir /github/home/.cache/trivy --debug
+
+      - name: Verify cache contents
+        run: ls -la /github/home/.cache/trivy  # Check if DB is downloaded
