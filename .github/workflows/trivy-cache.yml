@@ -21,7 +21,7 @@ jobs:
 
       - name: Download vulnerability DB
         if: steps.cache-key.outputs.cache-hit != 'true'
-        run: |
-          # Example for Trivy, similarly for Grype
-          trivy --download-db-only
-          mv /root/.cache/trivy/db /path/to/local/db
+        uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
+        with:
+          entrypoint: trivy
+          args: --download-db-only
