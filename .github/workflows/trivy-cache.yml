@@ -20,12 +20,14 @@ jobs:
         
 
       - name: Cache vulnerability database
-        uses: actions/cache@v3
+        id: cache
+        uses: actions/cache@v4
         with:
           path: /github/home/.cache/trivy  # Path to store the Trivy DB
           key: trivy-db-cache_${{ github.run_id }}
 
       - name: Download vulnerability DB
+        if: steps.cache.outputs.cache-hit != 'true' 
         uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
         with:
           entrypoint: trivy
