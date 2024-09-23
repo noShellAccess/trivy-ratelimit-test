@@ -20,7 +20,7 @@ jobs:
       - name: Cache vulnerability database
         uses: actions/cache@v3
         with:
-          path: /path/to/local/db  # Where the DB will be stored
+          path: /github/home/.cache/trivy  # Where the DB will be stored
           key: ${{ env.CACHE_KEY }}-vuln-db
 
       - name: Download vulnerability DB
