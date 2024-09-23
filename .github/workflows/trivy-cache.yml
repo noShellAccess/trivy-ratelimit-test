@@ -22,7 +22,7 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: /github/home/.cache/trivy  # Path to store the Trivy DB
+          path: /github/home/trivy-cache  # Path to store the Trivy DB
           key: trivy-db-cache_${{ github.run_id }}
 
       - name: Download vulnerability DB
