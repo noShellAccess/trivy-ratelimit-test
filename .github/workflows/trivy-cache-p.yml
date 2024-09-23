@@ -15,6 +15,7 @@ jobs:
     steps:
       - name: Prepare cache directory
         run: |
+          sudo mkdir -p .trivyqq
           sudo chown -R $USER:$USER .trivy
       - name: Cache vulnerability database
         id: cache
