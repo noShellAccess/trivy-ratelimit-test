@@ -29,6 +29,12 @@ jobs:
           echo "::set-output name=scan_image::python:3.4-alpine"
           echo "::set-output name=cis_json_file::cis_scan_results.json"
 
+      - name: Restore vulnerability database cache
+        id: restore_cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .trivy  # Path to restore the cached DB
+          key: trivy-db-cache
 
       - name: Run Trivy Scan for python
         uses: docker://aquasecurity/trivy-action@0.20.0
@@ -36,9 +42,8 @@ jobs:
         id: cis_json
         with:
           entrypoint: trivy
-          args: "image ${{ steps.meta.outputs.scan_image }} --compliance ${{ env.compliance }} -f json --ignore-unfixed -o ${{ steps.meta.outputs.cis_json_file }}"
+          args: "image ${{ steps.meta.outputs.scan_image }} --debug  --compliance ${{ env.compliance }} -f json --ignore-unfixed -o ${{ steps.meta.outputs.cis_json_file }} --skip-db-update --skip-java-db-update --cache-dir .trivy"
         env:
-          input: busybox:latest      # Example input image (can be set dynamically)
           compliance: docker-cis   
         
 
