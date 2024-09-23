@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: '0 0 * * *'  # Runs every 24 hours
   workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   cache_vuln_db:
