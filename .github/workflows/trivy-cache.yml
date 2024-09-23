@@ -28,5 +28,4 @@ jobs:
 
       - name: filesys
         run: |
-            ls /github/home/.cache/trivy;
             trivy image --help;
