@@ -15,9 +15,8 @@ jobs:
     steps:
       - name: Prepare cache directory
         run: |
-         sudo mkdir -p /github/home/.cache/trivy;
-         sudo chown -R $USER:$USER /github/home/.cache/trivy
-        
+         sudo mkdir -p /github/home/trivy-cache
+         sudo chown -R $USER:$USER /github/home/trivy-cache
 
       - name: Cache vulnerability database
         id: cache
@@ -31,7 +30,7 @@ jobs:
         uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
         with:
           entrypoint: trivy
-          args: image --download-db-only --debug 
+          args: image --download-db-only --cache-dir /github/home/trivy-cache --debug 
 
       - name: Verify cache contents
-        run: ls -la /github/home/.cache/trivy  # Check if DB is downloaded
+        run: ls -la /github/home/trivy-cache  # Check if DB is downloaded
