@@ -22,7 +22,7 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: /github/home/trivy-cache  # Path to store the Trivy DB
+          path: /github/home/trivy-cache/db  # Path to store the Trivy DB
           key: trivy-db-cache_${{ github.run_id }}
 
       - name: Download vulnerability DB
@@ -33,4 +33,4 @@ jobs:
           args: image --download-db-only --cache-dir /github/home/trivy-cache --debug 
 
       - name: Verify cache contents
-        run: ls -la /github/home/trivy-cache  # Check if DB is downloaded
+        run: ls -la /github/home/trivy-cache/db  # Check if DB is downloaded
