@@ -13,9 +13,6 @@ jobs:
   cache_vuln_db:
     runs-on: ubuntu-latest
     steps:
-      - name: filesys
-        run: |
-          mkdir ~/.cache/trivy 
       - name: Cache vulnerability database
         uses: actions/cache@v3
         with:
@@ -27,8 +24,4 @@ jobs:
         uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
         with:
           entrypoint: trivy
-          args: image --download-db-only --cache-dir ~/.cache/trivy 
-
-      - name: filesys
-        run: |
-          ls ~/.cache/trivy/db
+          args: image --download-db-only --debug
