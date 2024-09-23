@@ -16,7 +16,7 @@ jobs:
       - name: Cache vulnerability database
         uses: actions/cache@v3
         with:
-          path: /github/home/.cache/trivy  # Where the DB will be stored
+          path: /home/runner/work/trivy-ratelimit-test/trivy-ratelimit-test/db  # Where the DB will be stored
           key: trivy-db-cache-${{ steps.get-date.outputs.date }}
 
       - name: Download vulnerability DB
@@ -24,7 +24,7 @@ jobs:
         uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
         with:
           entrypoint: trivy
-          args: image --download-db-only --cache-dir .
+          args: image --download-db-only --cache-dir /home/runner/work/trivy-ratelimit-test/trivy-ratelimit-test
 
       - name: filesys
         run: |
