@@ -1,0 +1,27 @@
+name: Cache Trivy/Grype Vulnerability DB
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every 24 hours
+  workflow_dispatch:
+
+jobs:
+  cache_vuln_db:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up cache key
+        id: cache-key
+        run: echo "CACHE_KEY=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+        
+      - name: Cache vulnerability database
+        uses: actions/cache@v3
+        with:
+          path: /path/to/local/db  # Where the DB will be stored
+          key: ${{ env.CACHE_KEY }}-vuln-db
+
+      - name: Download vulnerability DB
+        if: steps.cache-key.outputs.cache-hit != 'true'
+        run: |
+          # Example for Trivy, similarly for Grype
+          trivy --download-db-only
+          mv /root/.cache/trivy/db /path/to/local/db
