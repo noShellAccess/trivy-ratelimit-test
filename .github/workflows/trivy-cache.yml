@@ -18,7 +18,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /github/home/.cache/trivy  # Where the DB will be stored
-          key: ${{ runner.os }}-trivy-db-cache-${{ steps.get-date.outputs.date }}
+          key: trivy-db-cache-${{ steps.get-date.outputs.date }}
 
       - name: Download vulnerability DB
         if: steps.cache-key.outputs.cache-hit != 'true'
