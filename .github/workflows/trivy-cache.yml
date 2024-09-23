@@ -14,14 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Prepare cache directory
-        run: sudo mkdir -p /github/home/.cache/trivy  # Ensure the directory exists
+        run: |
+         sudo mkdir -p /github/home/.cache/trivy;
+         sudo chown -R $USER:$USER /github/home/.cache/trivy
+        
 
       - name: Cache vulnerability database
         uses: actions/cache@v3
         with:
           path: /github/home/.cache/trivy  # Path to store the Trivy DB
-          key: trivy-db-cache-${{ steps.get-date.outputs.date }}
-          restore-keys: trivy-db-cache-
+          key: trivy-db-cache
+          restore-keys: trivy-db-cache
 
       - name: Download vulnerability DB
         if: steps.cache-key.outputs.cache-hit != 'true'
