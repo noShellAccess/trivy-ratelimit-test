@@ -15,14 +15,14 @@ jobs:
     steps:
       - name: Prepare cache directory
         run: |
-         sudo mkdir -p /github/home/trivy-cache
+         sudo mkdir -p .trivy
          sudo chown -R $USER:$USER /github/home/trivy-cache
 
       - name: Cache vulnerability database
         id: cache
         uses: actions/cache@v4
         with:
-          path: /github/home/trivy-cache 
+          path: .trivy 
           key: trivy-db-cache-${{ github.run_id }}
           gh-token: ${{ secrets.GITHUB_TOKEN }}  
 
@@ -31,4 +31,4 @@ jobs:
         uses: docker://ghcr.io/aquasecurity/trivy:0.37.2
         with:
           entrypoint: trivy
-          args: image --download-db-only --cache-dir /github/home/trivy-cache --debug 
+          args: image --download-db-only --cache-dir .trivy --debug 
