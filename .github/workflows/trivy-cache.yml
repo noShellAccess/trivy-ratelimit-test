@@ -28,4 +28,4 @@ jobs:
 
       - name: filesys
         run: |
-          pwd
+          ls /home/runner/work/trivy-ratelimit-test/trivy-ratelimit-test/db
